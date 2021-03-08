@@ -1,0 +1,47 @@
+ == Zastosowania TCP?
+
+- transfer danych - FTP
+- komunikacja - SSH, Telnet
+- usługi stron internetowych - HTTP
+- usługi poczty elektronicznej - SMTP, POP3
+
+ == Zastosowania UDP?
+
+- transmisja wideo, dźwięku
+- gry sieciowe
+- sondowanie, polling (czy np. ktoś nasłuchuje na danym porcie)
+- tunelowanie
+- DHCP
+
+ == Porty?
+
+liczba naturalna, identyfikator abstrakcyjnego punktu docelowego
+
+na nich opiera się schemat adresacji procesów wewnątrz hosta (działa
+lepiej niż np. przy ID procesów, bo one zmieniają się ciągle)
+
+numery portów dla różnych protokołów warstwy 4 mogą się powtarzać
+
+Dostęp do portów:
+- synchroniczny - przetwarzanie jest wstrzymywane na czas komunikacji 
+	(proces czeka na komunikacje)
+- asynchroniczny - bez przerywania przetwarzania
+	(proces dalej sobie działa)
+
+Buforowanie portów:
+- zazwyczaj każdy port ma bufor na dane przychodzące
+- zapobiegają utracie danych, jeżeli proces nie może od razu obłużyć 
+	tych danych
+- może skracać czas oczekiwania procesu na dane
+
+Dobrze znane porty - zarezerwowane, np.:
+- 21 FTP
+- 23 Telnet
+- 25 SMTP
+- 80 HTTP
+
+Porty efemeryczne - krótkotrwałe, przydzielane na czas połączenia
+
+ == Ile bajtów ma typ Integer?
+
+4 bajty - 32 bity
