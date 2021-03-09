@@ -25,6 +25,9 @@ public class Z1JavaUdpServer {
                 InetAddress clientAddress = receivePacket.getAddress();
                 int clientPort = receivePacket.getPort();
 
+                System.out.println(clientAddress);
+                System.out.println(clientPort);
+
                 byte[] responseBuffer = "UDP Java server response".getBytes();
                 DatagramPacket responsePacket = new DatagramPacket(responseBuffer, responseBuffer.length, clientAddress, clientPort);
                 socket.send(responsePacket);

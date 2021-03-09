@@ -17,6 +17,9 @@ public class Z1JavaUdpClient {
 
             DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, address, portNumber);
             socket.send(sendPacket);
+
+            System.out.println(socket.getLocalAddress());
+            System.out.println(socket.getLocalPort());
             
             byte[] receiveBuffer = new byte[1024];
 

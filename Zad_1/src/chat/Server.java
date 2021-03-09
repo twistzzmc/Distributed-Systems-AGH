@@ -13,8 +13,10 @@ public class Server {
         ServerSocket serverSocket;
 
         serverSocket = new ServerSocket(portNumber);
+        System.out.println("TCP Server UP!");
 
-        System.out.println("Server UP!");
+        ServerUdp serverUdp = new ServerUdp(portNumber);
+        serverUdp.start();
 
         while(true) {
             Thread newConnection = new Connection(serverSocket.accept());
