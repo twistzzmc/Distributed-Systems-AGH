@@ -32,13 +32,17 @@ public class ClientWriter extends Thread {
             if (input.equals("E")) {
                 client.running = false;
                 break;
-            } else if (input.equals("U")) {
-//                clientUdp.sendMessage("CHECK CHECK CHECK");
-
+            } else if (input.equals("U") || input.equals("M")) {
                 try {
                     Path filePath = Paths.get("C:\\Michal\\studia\\Semestr_6\\Systemy_Rozproszone\\Zad_1\\ASCII_FROG.txt");
                     String asciiFrog = Files.readString(filePath, StandardCharsets.US_ASCII);
-                    clientUdp.sendMessage(asciiFrog);
+
+                    if (input.equals("U")) {
+                        clientUdp.sendMessage(asciiFrog);
+                    } else {
+                        asciiFrog = "[" + client.nick + "]:\n" + asciiFrog;
+                        client.clientMulticast.sendMessage(asciiFrog);
+                    }
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }

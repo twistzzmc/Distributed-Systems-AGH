@@ -34,8 +34,6 @@ public class ServerUdp extends Thread {
                 String msg = new String(receivePacket.getData());
 
                 if (msg.trim().split("-")[0].equals("NEW_CLIENT")) {
-//                    System.out.println("[NEW UDP CLIENT] " + msg);
-
                     clientAddressList.add(receivePacket.getSocketAddress());
                     clientNicks.put(receivePacket.getSocketAddress(), msg.trim().split("-")[1]);
                 } else {
