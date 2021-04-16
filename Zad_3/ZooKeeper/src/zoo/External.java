@@ -1,7 +1,6 @@
 package zoo;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class External extends Thread {
@@ -15,18 +14,21 @@ public class External extends Thread {
 
     public void run() {
         System.out.println("GUI STARTED...");
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        while (!stop) {
-            try {
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+            while (!stop) {
                 if (br.ready()) {
-                    br.readLine();
-                    executor.printTree();
+                    String s = br.readLine();
+                    if (s.equals("T")) {
+                        executor.printTree();
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
+
+            br.close();
+        } catch (Exception e) { e.printStackTrace(); }
 
         System.out.println("GUI STOPPED...");
     }

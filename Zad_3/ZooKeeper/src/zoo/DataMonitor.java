@@ -1,15 +1,11 @@
 package zoo;
 
-/**
- * A simple class that monitors the data and existence of a ZooKeeper
- * node. It uses asynchronous ZooKeeper APIs.
- */
+
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.AsyncCallback.StatCallback;
-import org.apache.zookeeper.KeeperException.Code;
 import org.apache.zookeeper.data.Stat;
 
 import java.util.List;
@@ -18,7 +14,6 @@ public class DataMonitor implements Watcher, StatCallback {
     ZooKeeper zk;
     String znode;
     boolean dead;
-//    DataMonitorListener listener;
     Executor listener;
 
     public DataMonitor(ZooKeeper zk, String znode, Executor listener) {
@@ -32,17 +27,9 @@ public class DataMonitor implements Watcher, StatCallback {
         zk.exists(znode, true, this, null);
         int below = this.watchChildren(znode);
 
-        if (below > 0) {
+        if (below > 0 && listener.external != null) {
             listener.external.children(below);
         }
-//
-//        if (below == -1) {
-//            System.out.println("Node " + znode + " does not exist");
-//        } else if (below == 1) {
-//            System.out.println("There is 1 node below " + znode);
-//        } else {
-//            System.out.println("There are " + Integer.toString(below) + " node(s) below " + znode);
-//        }
     }
 
     public void process(WatchedEvent event) {
@@ -60,7 +47,6 @@ public class DataMonitor implements Watcher, StatCallback {
                 case Expired:
                     // It's all over
                     dead = true;
-//                    listener.closing(Code.SessionExpired);
                     listener.closing();
                     break;
             }
@@ -91,25 +77,17 @@ public class DataMonitor implements Watcher, StatCallback {
     public void processResult(int rc, String path, Object ctx, Stat stat) {
         boolean exists;
         switch (rc) {
-//            case Code.Ok:
-            case 0:
-                exists = true;
-                break;
-//            case Code.NoNode:
-            case -101:
-                exists = false;
-                break;
-//            case Code.SessionExpired:
-//            case Code.NoAuth:
-            case -112:
-            case -102:
+            case 0 -> exists = true;
+            case -101 -> exists = false;
+            case -112, -102 -> {
                 dead = true;
                 listener.closing();
                 return;
-            default:
-                // Retry errors
+            }
+            default -> {
                 zk.exists(znode, true, this, null);
                 return;
+            }
         }
 
         listener.exists(exists);
